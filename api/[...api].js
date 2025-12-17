@@ -1,16 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 import serverless from 'serverless-http';
+import { Pool } from 'pg';
+import bcrypt from 'bcryptjs';
 
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-// In-memory data (same as original server)
+// Database pool (optional) - use DATABASE_URL (Supabase) in production
+let pool;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+}
+
+// In-memory fallbacks
 const users = [
-  { id: 1, username: 'admin', name: 'Administrator', role: 'admin' },
-  { id: 2, username: 'cashier1', name: 'Cashier One', role: 'cashier' },
+  { id: 1, username: 'admin', name: 'Administrator', role: 'admin', password: 'admin123' },
+  { id: 2, username: 'cashier1', name: 'Cashier One', role: 'cashier', password: 'cashier123' },
 ];
 
 const items = [
@@ -28,57 +36,123 @@ let refundCounter = 1;
 let itemCounter = items.length + 1;
 
 // Authentication
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
-  if (username === 'admin' && password === 'admin123') {
-    const user = users.find(u => u.username === 'admin');
+  try {
+    if (pool) {
+      const { rows } = await pool.query('SELECT id, username, password, name, role FROM users WHERE username=$1', [username]);
+      const user = rows[0];
+      if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+      const ok = await bcrypt.compare(password, user.password);
+      if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
+      auditLogs.push({ id: auditLogs.length + 1, user_name: user.name || 'Unknown', action: 'LOGIN', details: `User ${username} logged in`, timestamp: new Date().toISOString() });
+      delete user.password;
+      return res.json({ user });
+    }
+    // fallback in-memory
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
     auditLogs.push({ id: auditLogs.length + 1, user_name: user?.name || 'Unknown', action: 'LOGIN', details: `User ${username} logged in`, timestamp: new Date().toISOString() });
     return res.json({ user });
+  } catch (err) {
+    console.error('Login error', err);
+    res.status(500).json({ error: 'Server error' });
   }
-  if (username === 'cashier1' && password === 'cashier123') {
-    const user = users.find(u => u.username === 'cashier1');
-    auditLogs.push({ id: auditLogs.length + 1, user_name: user?.name || 'Unknown', action: 'LOGIN', details: `User ${username} logged in`, timestamp: new Date().toISOString() });
-    return res.json({ user });
-  }
-  res.status(401).json({ error: 'Invalid credentials' });
 });
 
 app.post('/api/auth/logout', (req, res) => res.json({ success: true }));
 
 // Items
-app.get('/api/items', (req, res) => res.json(items));
-
-app.get('/api/items/:id', (req, res) => {
-  const item = items.find(i => i.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: 'Item not found' });
-  res.json(item);
+app.get('/api/items', async (req, res) => {
+  try {
+    if (pool) {
+      const { rows } = await pool.query('SELECT id, name_en, name_ar, price_per_unit, created_at FROM items ORDER BY id');
+      return res.json(rows);
+    }
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
-app.post('/api/items', (req, res) => {
-  const { name_en, name_ar, price_per_unit } = req.body;
-  if (!name_en || !name_ar || !price_per_unit) return res.status(400).json({ error: 'Missing required fields' });
-  const newItem = { id: itemCounter++, name_en, name_ar, price_per_unit, created_at: new Date().toISOString() };
-  items.push(newItem);
-  auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'CREATE_ITEM', details: `Created item: ${name_en}`, timestamp: new Date().toISOString() });
-  res.status(201).json(newItem);
+app.get('/api/items/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (pool) {
+      const { rows } = await pool.query('SELECT id, name_en, name_ar, price_per_unit, created_at FROM items WHERE id=$1', [id]);
+      if (!rows[0]) return res.status(404).json({ error: 'Item not found' });
+      return res.json(rows[0]);
+    }
+    const item = items.find(i => i.id === id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+    res.json(item);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
-app.patch('/api/items/:id/price', (req, res) => {
-  const { price_per_unit } = req.body;
-  const item = items.find(i => i.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: 'Item not found' });
-  const oldPrice = item.price_per_unit;
-  item.price_per_unit = price_per_unit;
-  auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'UPDATE_PRICE', details: `Updated ${item.name_en} price from ${oldPrice} to ${price_per_unit}`, timestamp: new Date().toISOString() });
-  res.json(item);
+app.post('/api/items', async (req, res) => {
+  try {
+    const { name_en, name_ar, price_per_unit } = req.body;
+    if (!name_en || !name_ar || !price_per_unit) return res.status(400).json({ error: 'Missing required fields' });
+    if (pool) {
+      const { rows } = await pool.query('INSERT INTO items (name_en, name_ar, price_per_unit) VALUES ($1,$2,$3) RETURNING id, name_en, name_ar, price_per_unit, created_at', [name_en, name_ar, price_per_unit]);
+      const newItem = rows[0];
+      await pool.query('INSERT INTO audit_logs (user_name, action, details) VALUES ($1,$2,$3)', ['Admin', 'CREATE_ITEM', `Created item: ${name_en}`]);
+      return res.status(201).json(newItem);
+    }
+    const newItem = { id: itemCounter++, name_en, name_ar, price_per_unit, created_at: new Date().toISOString() };
+    items.push(newItem);
+    auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'CREATE_ITEM', details: `Created item: ${name_en}`, timestamp: new Date().toISOString() });
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
-app.delete('/api/items/:id', (req, res) => {
-  const index = items.findIndex(i => i.id === parseInt(req.params.id));
-  if (index === -1) return res.status(404).json({ error: 'Item not found' });
-  const deletedItem = items.splice(index, 1)[0];
-  auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'DELETE_ITEM', details: `Deleted item: ${deletedItem.name_en}`, timestamp: new Date().toISOString() });
-  res.json({ success: true });
+app.patch('/api/items/:id/price', async (req, res) => {
+  try {
+    const { price_per_unit } = req.body;
+    const id = parseInt(req.params.id);
+    if (pool) {
+      const { rows } = await pool.query('UPDATE items SET price_per_unit=$1 WHERE id=$2 RETURNING id, name_en, name_ar, price_per_unit, created_at', [price_per_unit, id]);
+      if (!rows[0]) return res.status(404).json({ error: 'Item not found' });
+      await pool.query('INSERT INTO audit_logs (user_name, action, details) VALUES ($1,$2,$3)', ['Admin', 'UPDATE_PRICE', `Updated ${rows[0].name_en} price to ${price_per_unit}`]);
+      return res.json(rows[0]);
+    }
+    const item = items.find(i => i.id === id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+    const oldPrice = item.price_per_unit;
+    item.price_per_unit = price_per_unit;
+    auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'UPDATE_PRICE', details: `Updated ${item.name_en} price from ${oldPrice} to ${price_per_unit}`, timestamp: new Date().toISOString() });
+    res.json(item);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.delete('/api/items/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (pool) {
+      const { rows } = await pool.query('DELETE FROM items WHERE id=$1 RETURNING id, name_en', [id]);
+      if (!rows[0]) return res.status(404).json({ error: 'Item not found' });
+      await pool.query('INSERT INTO audit_logs (user_name, action, details) VALUES ($1,$2,$3)', ['Admin', 'DELETE_ITEM', `Deleted item: ${rows[0].name_en}`]);
+      return res.json({ success: true });
+    }
+    const index = items.findIndex(i => i.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Item not found' });
+    const deletedItem = items.splice(index, 1)[0];
+    auditLogs.push({ id: auditLogs.length + 1, user_name: 'Admin', action: 'DELETE_ITEM', details: `Deleted item: ${deletedItem.name_en}`, timestamp: new Date().toISOString() });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.post('/api/sales', (req, res) => {
