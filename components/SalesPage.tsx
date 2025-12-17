@@ -44,6 +44,8 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
   const [processing, setProcessing] = useState(false);
   const [completedSale, setCompletedSale] = useState<Sale | null>(null);
   const [completedRefund, setCompletedRefund] = useState<Refund | null>(null);
+  const [selectedHistorySale, setSelectedHistorySale] = useState<Sale | null>(null);
+
 
   // Refund State
   const [showRefundModal, setShowRefundModal] = useState(false);
@@ -772,6 +774,12 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
       {completedRefund && (
         <ReceiptModal refund={completedRefund} onClose={() => setCompletedRefund(null)} />
       )}
+    {selectedHistorySale && (
+        <ReceiptModal
+          sale={selectedHistorySale}
+          onClose={() => setSelectedHistorySale(null)}
+        />
+      )}
 
       {/* Refund Modal */}
       {showRefundModal && (
@@ -948,6 +956,9 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       <th className="p-3 text-left font-bold text-slate-700">
                         Status / الحالة
                       </th>
+                      <th className="p-3 text-left font-bold text-slate-700">
+                               Actions / إجراء
+                             </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y">
@@ -978,6 +989,14 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                               : 'refunded / مسترجعة'}
                           </span>
                         </td>
+                          <td className="p-3">
+        <button
+          onClick={() => setSelectedHistorySale(sale)}
+          className="text-xs px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
+        >
+          View / Print
+        </button>
+      </td>
                       </tr>
                     ))}
                   </tbody>

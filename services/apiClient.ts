@@ -2,6 +2,7 @@ import { User, Item, Sale, SaleItem, DailyReport, Refund, AuditLog, PaymentMetho
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
+
 // Error handler utility
 class APIError extends Error {
   constructor(public status: number, message: string) {
