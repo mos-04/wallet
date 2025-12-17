@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { Sale, Refund } from '../types';
 
+
 interface ReceiptModalProps {
   sale?: Sale;
   refund?: Refund;
   onClose: () => void;
 }
+
 
 export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClose }) => {
   const formatDateTime = (isoString: string) => {
@@ -13,6 +15,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
     const pad = (n: number) => n.toString().padStart(2, '0');
     return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
   };
+
 
   const generateReceiptHTML = () => {
     const isRefund = !!refund;
@@ -271,8 +274,8 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                         <div class="item-name-en">${item.item_name_en}</div>
                         <div class="item-name-ar">${item.item_name_ar}</div>
                       </td>
-                      <td class="qty">${item.quantity.toFixed(2)}</td>
-                      <td class="price">${item.line_total.toFixed(3)}</td>
+                      <td class="qty">${Number(item.quantity).toFixed(2)}</td>
+                      <td class="price">${Number(item.line_total).toFixed(3)}</td>
                     </tr>
                   `).join('')}
                 </tbody>
@@ -286,33 +289,33 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
             
             ${!isRefund && sale ? `
               <div class="total-row">
-                <span>${sale.subtotal.toFixed(3)} KWD</span>
+                <span>${Number(sale.subtotal).toFixed(3)} KWD</span>
                 <span>Subtotal / الإجمالي</span>
               </div>
               
-              ${sale.discount_amount > 0 ? `
+              ${Number(sale.discount_amount) > 0 ? `
                 <div class="total-row">
-                  <span>-${sale.discount_amount.toFixed(3)} KWD</span>
-                  <span>Discount / الخصم ${sale.discount_percentage > 0 ? `(${sale.discount_percentage}%)` : ''}</span>
+                  <span>-${Number(sale.discount_amount).toFixed(3)} KWD</span>
+                  <span>Discount / الخصم ${Number(sale.discount_percentage) > 0 ? `(${sale.discount_percentage}%)` : ''}</span>
                 </div>
               ` : ''}
               
               <div class="total-row final">
-                <span>${sale.total_amount.toFixed(3)} KWD</span>
+                <span>${Number(sale.total_amount).toFixed(3)} KWD</span>
                 <span>TOTAL / الصافي</span>
               </div>
               <div style="text-align: right; font-weight: bold; font-size: 9pt;">
-                ${sale.total_amount.toFixed(3)} د.ك
+                ${Number(sale.total_amount).toFixed(3)} د.ك
               </div>
             ` : ''}
             
             ${isRefund ? `
               <div class="total-row final">
-                <span>${refund!.amount.toFixed(3)} KWD</span>
+                <span>${Number(refund!.amount).toFixed(3)} KWD</span>
                 <span>Refund Amount</span>
               </div>
               <div style="text-align: right; font-weight: bold; font-size: 9pt;">
-                ${refund!.amount.toFixed(3)} د.ك
+                ${Number(refund!.amount).toFixed(3)} د.ك
               </div>
               <div style="margin-top: 1mm; font-size: 8pt;">
                 <strong>Reason:</strong> ${refund!.reason}
@@ -357,6 +360,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
     `;
   };
 
+
   const handlePrint = () => {
     const printWindow = window.open('', '_blank');
     if (printWindow) {
@@ -370,9 +374,12 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
     }
   };
 
+
   if (!sale && !refund) return null;
 
+
   const isRefund = !!refund;
+
 
   return (
     <>
@@ -427,6 +434,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
         }
       `}</style>
 
+
       <div className="receipt-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div className="receipt-modal-wrapper bg-white w-96 shadow-xl">
           <div className="receipt-content font-mono text-sm leading-tight text-black p-4">
@@ -451,6 +459,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
               </div>
             </div>
 
+
             {/* INFO Section */}
             <div className="mb-4 space-y-1">
               <div className="flex justify-between">
@@ -468,6 +477,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                 </div>
               )}
 
+
               <div className="flex justify-between mt-2">
                 <span>Cashier:</span>
                 <span>{sale?.cashier_name || 'Admin'}</span>
@@ -476,6 +486,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                 <span>{sale?.cashier_name || 'Admin'}</span>
                 <span>:أمين الصندوق</span>
               </div>
+
 
               <div className="flex justify-between mt-2">
                 <span>Date/Time:</span>
@@ -486,6 +497,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                  <span>:التاريخ/الوقت</span>
               </div>
             </div>
+
 
             {/* ITEMS Section */}
             {!isRefund && sale && (
@@ -509,9 +521,9 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                           <div className="font-bold">{item.item_name_en}</div>
                           <div className="font-arabic text-xs">{item.item_name_ar}</div>
                         </td>
-                        <td className="text-center">{item.quantity.toFixed(2)}</td>
+                        <td className="text-center">{Number(item.quantity).toFixed(2)}</td>
                         <td className="text-right font-bold">
-                          {item.line_total.toFixed(3)}
+                          {Number(item.line_total).toFixed(3)}
                         </td>
                       </tr>
                     ))}
@@ -520,44 +532,48 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
               </div>
             )}
 
+
             {/* TOTALS Section */}
             <div className="mb-4">
               <div className="border-t border-b border-black border-dashed py-1 mb-2 text-center font-bold text-xs">
                  {isRefund ? 'REFUND DETAILS / تفاصيل الاسترجاع' : 'TOTALS / الإجماليات'}
               </div>
 
+
               {!isRefund && sale && (
                 <>
                   <div className="flex justify-between text-xs">
                     <span>Subtotal / الإجمالي</span>
-                    <span>{sale.subtotal.toFixed(3)} KWD</span>
+                    <span>{Number(sale.subtotal).toFixed(3)} KWD</span>
                   </div>
                   
-                  {sale.discount_amount > 0 && (
+                  {Number(sale.discount_amount) > 0 && (
                     <div className="flex justify-between text-xs">
-                      <span>Discount / الخصم {sale.discount_percentage > 0 ? `(${sale.discount_percentage}%)` : ''}</span>
-                      <span>-{sale.discount_amount.toFixed(3)} KWD</span>
+                      <span>Discount / الخصم {Number(sale.discount_percentage) > 0 ? `(${sale.discount_percentage}%)` : ''}</span>
+                      <span>-{Number(sale.discount_amount).toFixed(3)} KWD</span>
                     </div>
                   )}
 
+
                   <div className="flex justify-between text-base font-bold border-t border-black mt-2 pt-1">
                     <span>TOTAL / الصافي</span>
-                    <span>{sale.total_amount.toFixed(3)} KWD</span>
+                    <span>{Number(sale.total_amount).toFixed(3)} KWD</span>
                   </div>
                   <div className="text-right font-arabic font-bold text-base">
-                    <span>{sale.total_amount.toFixed(3)} د.ك</span>
+                    <span>{Number(sale.total_amount).toFixed(3)} د.ك</span>
                   </div>
                 </>
               )}
+
 
               {isRefund && (
                 <>
                   <div className="flex justify-between font-bold text-base">
                     <span>Refund Amount</span>
-                    <span>{refund.amount.toFixed(3)} KWD</span>
+                    <span>{Number(refund.amount).toFixed(3)} KWD</span>
                   </div>
                    <div className="text-right font-arabic font-bold text-base">
-                    <span>{refund.amount.toFixed(3)} د.ك</span>
+                    <span>{Number(refund.amount).toFixed(3)} د.ك</span>
                   </div>
                   <div className="mt-2 text-xs">
                     <p><strong>Reason:</strong> {refund.reason}</p>
@@ -565,6 +581,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
                 </>
               )}
             </div>
+
 
             {/* PAYMENT Section */}
             {!isRefund && sale && (
@@ -591,6 +608,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
               </div>
             )}
 
+
             {/* FOOTER */}
             <div className="text-center text-xs space-y-1 mt-6 border-t border-black pt-4">
               <p className="font-bold">THANK YOU / شكرا لك</p>
@@ -599,6 +617,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
               <p className="text-xs">Powered by POS System v1.0</p>
             </div>
           </div>
+
 
           {/* Screen Only Actions */}
           <div className="receipt-actions mt-6 flex gap-2 p-4 bg-gray-100 border-t">
