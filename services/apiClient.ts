@@ -1,7 +1,6 @@
 import { User, Item, Sale, SaleItem, DailyReport, Refund, AuditLog, PaymentMethod } from '../types';
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 // Error handler utility
 class APIError extends Error {
