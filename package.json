@@ -1,33 +1,35 @@
 {
-  "name": "pos-app",
-  "version": "1.0.0",
-  "description": "Kuwait POS system for sand/gatch sales",
+  "name": "kuwait-construction-pos",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "db:init": "node scripts/init-db.js"
+    "dev": "concurrently \"node server.js\" \"vite\"",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "next-auth": "^4.24.0",
-    "bcrypt": "^5.1.1",
-    "better-sqlite3": "^9.2.0",
-    "next-i18next": "^15.0.0",
-    "i18next": "^23.7.0",
-    "jspdf": "^2.5.1",
-    "html2canvas": "^1.4.1",
-    "axios": "^1.6.0",
-    "date-fns": "^2.30.0",
-    "tailwindcss": "^3.3.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32"
+    "@tailwindcss/vite": "^4.1.18",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "lucide-react": "^0.561.0",
+    "pg": "^8.16.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
-    "eslint-config-next": "^14.0.0"
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.19.3",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.23",
+    "concurrently": "^9.2.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
   }
 }
