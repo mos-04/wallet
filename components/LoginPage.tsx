@@ -41,11 +41,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
-        <div className="bg-blue-600 p-8 text-center">
-          <h1 className="text-2xl font-bold text-white mb-2">Kuwait Construction POS</h1>
-          <p className="text-blue-100">Secure System Login</p>
+        <div className="bg-white pt-8 px-8 py-8 pb-0 text-center">
+          <img src='../src/images/sabic international logo.png' alt="Logo" className="mx-auto mb-4 h-20" />
         </div>
-        
+        <div className="bg-slate-50 text-center">
+        <p className="text-black font-semibold text-lg">System Login</p>
+        </div>
         <div className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
@@ -65,7 +66,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   disabled={loading}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#3d579d] focus:border-[#5a70b5] outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Enter username"
                   required
                   autoComplete="username"
@@ -84,7 +85,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#5a70b5] focus:border-[#3d579d] outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Enter password"
                   required
                   autoComplete="current-password"
@@ -97,8 +98,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               disabled={loading || !username || !password}
               className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-all ${
                 loading 
-                  ? 'bg-blue-400 cursor-wait' 
-                  : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
+                  ? 'bg-[#5a70b5] cursor-wait' 
+                  : 'bg-[#3d579d] hover:bg-[#2f4377] hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-[#3d579d] disabled:opacity-50 disabled:cursor-not-allowed'
               }`}
             >
               {loading ? 'Signing in...' : 'Sign In'}

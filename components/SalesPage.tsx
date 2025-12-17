@@ -14,8 +14,13 @@ import {
   XCircle,
   Search,
   AlertCircle,
-  Eye,
+  History,
+  Wallet,
+  Calendar,
 } from 'lucide-react';
+import ChequeIcon from '../src/images/iconamoon--cheque.svg';
+import CashIcon from '../src/images/tabler--cash-banknote.svg';
+import CreditCardIcon from '../src/images/material-symbols-light--credit-card-outline.svg';
 
 interface SalesPageProps {
   user: User;
@@ -280,7 +285,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
         <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3d579f]"></div>
           <p className="text-slate-600 font-medium">
             Loading items... / جارٍ تحميل المنتجات...
           </p>
@@ -293,11 +298,9 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
     <div className="flex flex-col lg:h-screen bg-slate-100 min-h-screen">
       {/* Header */}
       <header className="bg-white border-b px-6 py-4 flex justify-between items-center shadow-sm z-10 shrink-0 sticky top-0">
-        <div className="flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded text-white">
-            <ShoppingCart className="w-5 h-5" />
-          </div>
-          <div>
+        <div className="flex items-center gap-4">
+          <img src='../src/images/sabic international logo.png' alt="Logo" className="h-12" />
+          <div className="border-l border-slate-300 pl-4">
             <h1 className="text-xl font-bold text-slate-800 leading-none">
               POS Terminal / نقطة بيع
             </h1>
@@ -309,21 +312,21 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowSalesHistory(true)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded hover:bg-blue-100 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#3d579f] text-white rounded-lg hover:bg-[#2f4377] text-sm font-medium transition-colors shadow-sm"
           >
-            <Eye className="w-4 h-4" />
-            Sales History / سجل المبيعات
+            <History className="w-4 h-4" />
+            <span className="hidden md:inline">Sales History / سجل المبيعات</span>
           </button>
           <button
             onClick={() => setShowRefundModal(true)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#ff4033] text-white rounded-lg hover:bg-[#e6362b] text-sm font-medium transition-colors shadow-sm"
           >
             <RotateCcw className="w-4 h-4" />
-            Refund / استرجاع
+            <span className="hidden md:inline">Refund / استرجاع</span>
           </button>
           <button
             onClick={onLogout}
-            className="text-sm text-slate-500 hover:text-red-600 font-medium ml-4"
+            className="text-sm text-slate-500 hover:text-[#ff4033] font-medium ml-4 transition-colors"
           >
             Logout / تسجيل الخروج
           </button>
@@ -365,15 +368,15 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                     onClick={() => handleQuickSelect(item)}
                     className={`p-4 rounded-xl border text-left transition-all relative overflow-hidden group ${
                       selectedItemId === item.id.toString()
-                        ? 'bg-blue-600 border-blue-600 text-white shadow-md ring-2 ring-blue-300'
-                        : 'bg-white border-slate-200 text-slate-700 hover:border-blue-400 hover:shadow-sm'
+                        ? 'bg-[#3d579f] border-[#3d579f] text-white shadow-md ring-2 ring-[#5a70b5]'
+                        : 'bg-white border-slate-200 text-slate-700 hover:border-[#3d579f] hover:shadow-sm'
                     }`}
                   >
                     <div className="font-bold text-lg mb-1">{item.name_en}</div>
                     <div
                       className={`text-sm mb-2 font-arabic ${
                         selectedItemId === item.id.toString()
-                          ? 'text-blue-100'
+                          ? 'text-white/90'
                           : 'text-slate-500'
                       }`}
                     >
@@ -383,7 +386,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       className={`font-mono font-medium ${
                         selectedItemId === item.id.toString()
                           ? 'text-white'
-                          : 'text-blue-600'
+                          : 'text-[#3d579f]'
                       }`}
                     >
                       {Number(item.price_per_unit).toFixed(3)} KWD / د.ك
@@ -405,7 +408,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   Selected Item / المنتج المختار
                 </label>
                 <select
-                  className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50"
+                  className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#3d579f] outline-none bg-slate-50"
                   value={selectedItemId}
                   onChange={e => setSelectedItemId(e.target.value)}
                 >
@@ -426,7 +429,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   type="number"
                   min="0.01"
                   step="0.01"
-                  className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold text-lg"
+                  className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#3d579f] outline-none text-center font-bold text-lg"
                   value={qtyInput}
                   onChange={e => setQtyInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleAddItem()}
@@ -435,7 +438,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
               <button
                 onClick={handleAddItem}
                 disabled={!selectedItemId}
-                className="w-full md:w-auto bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="w-full md:w-auto bg-[#3d579f] text-white px-8 py-3 rounded-lg hover:bg-[#2f4377] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
                 <Plus className="w-5 h-5" />
                 Add to Cart / أضف إلى السلة
@@ -457,7 +460,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 {cart.length > 0 && (
                   <button
                     onClick={clearCart}
-                    className="text-xs text-red-600 hover:text-red-800 flex items-center gap-1 font-medium px-2 py-1 rounded hover:bg-red-50"
+                    className="text-xs text-[#ff4033] hover:text-[#e6362b] flex items-center gap-1 font-medium px-2 py-1 rounded hover:bg-red-50"
                   >
                     <Eraser className="w-3 h-3" />
                     Clear Cart / مسح السلة
@@ -495,7 +498,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {cart.map((item, idx) => (
-                      <tr key={idx} className="hover:bg-blue-50/50 transition-colors">
+                      <tr key={idx} className="hover:bg-slate-50 transition-colors">
                         <td className="p-4">
                           <div className="font-bold text-slate-800">{item.item_name_en}</div>
                           <div className="text-xs text-slate-500 font-arabic">
@@ -507,7 +510,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                             type="number"
                             min="0.01"
                             step="0.01"
-                            className="w-24 p-2 border border-slate-300 rounded text-center focus:ring-2 focus:ring-blue-500 outline-none font-medium bg-white"
+                            className="w-24 p-2 border border-slate-300 rounded text-center focus:ring-2 focus:ring-[#3d579f] outline-none font-medium bg-white"
                             value={item.quantity}
                             onChange={e =>
                               updateCartItemQty(idx, parseFloat(e.target.value) || 0)
@@ -523,7 +526,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                         <td className="p-4 text-center">
                           <button
                             onClick={() => removeFromCart(idx)}
-                            className="text-slate-400 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50"
+                            className="text-slate-400 hover:text-[#ff4033] transition-colors p-2 rounded-full hover:bg-red-50"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -583,7 +586,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                         onClick={() => setDiscountType('amount')}
                         className={`px-3 text-xs font-bold transition-colors ${
                           discountType === 'amount'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-[#3d579f] text-white'
                             : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
                         }`}
                       >
@@ -593,7 +596,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                         onClick={() => setDiscountType('percent')}
                         className={`px-3 text-xs font-bold transition-colors ${
                           discountType === 'percent'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-[#3d579f] text-white'
                             : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
                         }`}
                       >
@@ -602,7 +605,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                     </div>
                   </div>
                   <div className="text-right w-24">
-                    <span className="text-red-500 font-mono font-medium text-sm">
+                    <span className="text-[#ff4033] font-mono font-medium text-sm">
                       - {discountCalc.amount.toFixed(3)}
                     </span>
                   </div>
@@ -613,7 +616,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 <span className="text-lg font-bold text-slate-800">
                   TOTAL DUE / المبلغ المستحق
                 </span>
-                <span className="text-3xl font-extrabold text-blue-600 leading-none">
+                <span className="text-3xl font-extrabold text-[#3d579f] leading-none">
                   {totalAmount.toFixed(3)}{' '}
                   <span className="text-sm text-slate-500 font-normal">
                     KWD / د.ك
@@ -626,16 +629,15 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
             <div className="space-y-4 mb-8 flex-1">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">
                 Select Payment Method / اختر طريقة الدفع{' '}
-                <span className="text-red-500">*</span>
+                <span className="text-[#ff4033]">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { id: 'cash', label: 'Cash / نقداً', icon: Banknote },
-                  { id: 'knet', label: 'KNET / كي نت', icon: CreditCard },
-                  { id: 'cheque', label: 'Cheque / شيك', icon: FileText },
-                  { id: 'credit', label: 'Credit / أجل', icon: CreditCard },
+                  { id: 'cash', label: 'Cash / نقداً', icon: 'custom-cash' },
+                  { id: 'knet', label: 'KNET / كي نت', icon: 'custom-card' },
+                  { id: 'cheque', label: 'Cheque / شيك', icon: 'custom-cheque' },
+                  { id: 'credit', label: 'Credit / أجل', icon: 'custom-card' },
                 ].map(method => {
-                  const Icon = method.icon;
                   const isSelected = paymentMethod === method.id;
                   return (
                     <button
@@ -643,18 +645,47 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       onClick={() => setPaymentMethod(method.id as PaymentMethod)}
                       className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all relative ${
                         isSelected
-                          ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
-                          : 'border-slate-100 bg-white hover:border-blue-200 hover:bg-slate-50 text-slate-600'
+                          ? 'border-[#3d579f] bg-[#3d579f]/10 text-[#3d579f] shadow-sm'
+                          : 'border-slate-100 bg-white hover:border-[#3d579f]/30 hover:bg-slate-50 text-slate-600'
                       }`}
                     >
-                      <Icon
-                        className={`w-6 h-6 mb-2 ${
-                          isSelected ? 'text-blue-600' : 'text-slate-400'
-                        }`}
-                      />
+                      {method.icon === 'custom-cash' ? (
+                        <img 
+                          src={CashIcon} 
+                          alt="Cash" 
+                          className={`w-6 h-6 mb-2 ${
+                            isSelected ? 'brightness-0 saturate-100' : 'opacity-60'
+                          }`}
+                          style={isSelected ? { filter: 'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)' } : {}}
+                        />
+                      ) : method.icon === 'custom-card' ? (
+                        <img 
+                          src={CreditCardIcon} 
+                          alt="Card" 
+                          className={`w-6 h-6 mb-2 ${
+                            isSelected ? 'brightness-0 saturate-100' : 'opacity-60'
+                          }`}
+                          style={isSelected ? { filter: 'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)' } : {}}
+                        />
+                      ) : method.icon === 'custom-cheque' ? (
+                        <img 
+                          src={ChequeIcon} 
+                          alt="Cheque" 
+                          className={`w-6 h-6 mb-2 ${
+                            isSelected ? 'brightness-0 saturate-100' : 'opacity-60'
+                          }`}
+                          style={isSelected ? { filter: 'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)' } : {}}
+                        />
+                      ) : (
+                        React.createElement(method.icon as any, {
+                          className: `w-6 h-6 mb-2 ${
+                            isSelected ? 'text-[#3d579f]' : 'text-slate-400'
+                          }`
+                        })
+                      )}
                       <span className="text-sm font-bold">{method.label}</span>
                       {isSelected && (
-                        <div className="absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full"></div>
+                        <div className="absolute top-2 right-2 w-2 h-2 bg-[#3d579f] rounded-full"></div>
                       )}
                     </button>
                   );
@@ -663,25 +694,25 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
 
               {/* Dynamic Inputs based on Method */}
               {paymentMethod === 'knet' && (
-                <div className="animate-in fade-in slide-in-from-top-2 duration-200 bg-blue-50 p-4 rounded-xl border border-blue-100 shadow-sm">
-                  <label className="block text-xs font-bold text-blue-800 mb-1 uppercase">
+                <div className="animate-in fade-in slide-in-from-top-2 duration-200 bg-[#3d579f]/10 p-4 rounded-xl border border-[#3d579f]/20 shadow-sm">
+                  <label className="block text-xs font-bold text-[#3d579f] mb-1 uppercase">
                     KNET Reference Number / رقم مرجع كي نت{' '}
-                    <span className="text-red-500">*</span>
+                    <span className="text-[#ff4033]">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter reference number / أدخل رقم المرجع"
                     className={`w-full p-3 border rounded-lg outline-none focus:ring-2 font-mono ${
                       !knetRef
-                        ? 'border-red-300 focus:ring-red-200 bg-white'
-                        : 'border-blue-300 focus:ring-blue-200 bg-white'
+                        ? 'border-[#ff4033]/30 focus:ring-[#ff4033]/20 bg-white'
+                        : 'border-[#3d579f]/30 focus:ring-[#3d579f]/20 bg-white'
                     }`}
                     value={knetRef}
                     onChange={e => setKnetRef(e.target.value)}
                     autoFocus
                   />
                   {!knetRef && (
-                    <p className="text-xs text-red-500 mt-1 font-medium">
+                    <p className="text-xs text-[#ff4033] mt-1 font-medium">
                       Reference is mandatory. / رقم المرجع إجباري.
                     </p>
                   )}
@@ -691,21 +722,21 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
               {paymentMethod === 'cheque' && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-200 bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
                   <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                    Cheque Number / رقم الشيك <span className="text-red-500">*</span>
+                    Cheque Number / رقم الشيك <span className="text-[#ff4033]">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Enter cheque number / أدخل رقم الشيك"
                     className={`w-full p-3 border rounded-lg outline-none focus:ring-2 font-mono ${
                       !chequeNum
-                        ? 'border-red-300 focus:ring-red-200 bg-white'
-                        : 'border-slate-300 focus:ring-blue-200 bg-white'
+                        ? 'border-[#ff4033]/30 focus:ring-[#ff4033]/20 bg-white'
+                        : 'border-slate-300 focus:ring-[#3d579f]/20 bg-white'
                     }`}
                     value={chequeNum}
                     onChange={e => setChequeNum(e.target.value)}
                   />
                   {!chequeNum && (
-                    <p className="text-xs text-red-500 mt-1 font-medium">
+                    <p className="text-xs text-[#ff4033] mt-1 font-medium">
                       Cheque number is mandatory. / رقم الشيك إجباري.
                     </p>
                   )}
@@ -721,7 +752,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 className={`w-full py-4 rounded-xl text-white font-bold text-lg shadow-lg transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 ${
                   !canSubmit
                     ? 'bg-slate-300 cursor-not-allowed shadow-none'
-                    : 'bg-green-600 hover:bg-green-700 hover:shadow-green-200 shadow-green-100'
+                    : 'bg-[#3d579f] hover:bg-[#2f4377] hover:shadow-[#3d579f]/20 shadow-[#3d579f]/10'
                 }`}
               >
                 {processing ? (
@@ -732,7 +763,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 ) : (
                   <>
                     Complete Sale / إنهاء البيع{' '}
-                    <span className="bg-green-700 px-2 py-0.5 rounded text-sm">
+                    <span className="bg-[#2f4377] px-2 py-0.5 rounded text-sm">
                       {totalAmount.toFixed(3)} KWD / د.ك
                     </span>
                   </>
@@ -746,17 +777,17 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   </p>
                 )}
                 {!isCartEmpty && !isPaymentSelected && (
-                  <p className="text-xs text-red-500 font-medium animate-pulse">
+                  <p className="text-xs text-[#ff4033] font-medium animate-pulse">
                     Select a payment method. / اختر طريقة الدفع.
                   </p>
                 )}
                 {!isCartEmpty && isKnetInvalid && (
-                  <p className="text-xs text-red-500 font-medium">
+                  <p className="text-xs text-[#ff4033] font-medium">
                     KNET reference required. / رقم مرجع كي نت مطلوب.
                   </p>
                 )}
                 {!isCartEmpty && isChequeInvalid && (
-                  <p className="text-xs text-red-500 font-medium">
+                  <p className="text-xs text-[#ff4033] font-medium">
                     Cheque number required. / رقم الشيك مطلوب.
                   </p>
                 )}
@@ -787,8 +818,8 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
           <div className="bg-white w-full max-w-lg p-6 rounded-2xl shadow-2xl transform transition-all scale-100">
             <div className="flex justify-between items-center mb-6 pb-4 border-b">
               <div className="flex items-center gap-2">
-                <div className="bg-red-100 p-2 rounded-full">
-                  <RotateCcw className="w-5 h-5 text-red-600" />
+                <div className="bg-[#ff4033]/10 p-2 rounded-full">
+                  <RotateCcw className="w-5 h-5 text-[#ff4033]" />
                 </div>
                 <h2 className="text-xl font-bold text-slate-800">
                   Process Refund / تنفيذ استرجاع
@@ -803,7 +834,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
             </div>
 
             {refundError && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 flex items-center gap-2 text-sm text-red-700">
+              <div className="bg-[#ff4033]/10 border border-[#ff4033]/30 rounded-lg p-3 mb-4 flex items-center gap-2 text-sm text-[#ff4033]">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {refundError}
               </div>
@@ -821,7 +852,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       <input
                         type="text"
                         placeholder="SALE-2025-XXXXXX"
-                        className="w-full pl-10 p-3 border border-slate-300 rounded-xl uppercase font-mono focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="w-full pl-10 p-3 border border-slate-300 rounded-xl uppercase font-mono focus:ring-2 focus:ring-[#3d579f] outline-none"
                         value={refundSaleIdInput}
                         onChange={e => setRefundSaleIdInput(e.target.value)}
                         onKeyDown={e =>
@@ -832,7 +863,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                     <button
                       onClick={handleSearchSaleForRefund}
                       disabled={refundSearching}
-                      className="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                      className="bg-[#3d579f] text-white px-6 py-2 rounded-xl font-bold hover:bg-[#2f4377] disabled:opacity-50 transition-colors"
                     >
                       {refundSearching ? 'Searching... / جارٍ البحث...' : 'Find / بحث'}
                     </button>
@@ -870,10 +901,10 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">
                     Select Refund Reason / اختر سبب الاسترجاع{' '}
-                    <span className="text-red-500">*</span>
+                    <span className="text-[#ff4033]">*</span>
                   </label>
                   <select
-                    className="w-full p-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    className="w-full p-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-[#3d579f] bg-white"
                     value={refundReason}
                     onChange={e => setRefundReason(e.target.value)}
                   >
@@ -897,7 +928,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 <button
                   onClick={handleProcessRefund}
                   disabled={!refundReason || processing}
-                  className="w-full bg-red-600 text-white py-4 rounded-xl font-bold hover:bg-red-700 disabled:opacity-50 shadow-lg shadow-red-100 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full bg-[#ff4033] text-white py-4 rounded-xl font-bold hover:bg-[#e6362b] disabled:opacity-50 shadow-lg shadow-[#ff4033]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   {processing ? (
                     <>
@@ -920,7 +951,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
           <div className="bg-white w-full max-w-3xl max-h-96 rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden">
             <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white">
               <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <Eye className="w-5 h-5" />
+                <History className="w-5 h-5" />
                 Recent Sales / آخر المبيعات
               </h2>
               <button
@@ -964,7 +995,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   <tbody className="divide-y">
                     {recentSales.map(sale => (
                       <tr key={sale.id} className="hover:bg-slate-50">
-                        <td className="p-3 font-mono text-blue-600 font-bold">
+                        <td className="p-3 font-mono text-[#3d579f] font-bold">
                           {sale.sale_number}
                         </td>
                         <td className="p-3 text-slate-600">
@@ -992,7 +1023,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                           <td className="p-3">
         <button
           onClick={() => setSelectedHistorySale(sale)}
-          className="text-xs px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
+          className="text-xs px-3 py-1 rounded bg-[#3d579f] text-white hover:bg-[#2f4377]"
         >
           View / Print
         </button>
