@@ -21,6 +21,7 @@ import {
 import ChequeIcon from '../src/images/iconamoon--cheque.svg';
 import CashIcon from '../src/images/tabler--cash-banknote.svg';
 import CreditCardIcon from '../src/images/material-symbols-light--credit-card-outline.svg';
+import LogoImage from '../src/images/sabic international logo.png';
 
 interface SalesPageProps {
   user: User;
@@ -299,7 +300,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
       {/* Header */}
       <header className="bg-white border-b px-6 py-4 flex justify-between items-center shadow-sm z-10 shrink-0 sticky top-0">
         <div className="flex items-center gap-4">
-          <img src='../src/images/sabic international logo.png' alt="Logo" className="h-12" />
+          <img src={LogoImage} alt="Logo" className="h-12" />
           <div className="border-l border-slate-300 pl-4">
             <h1 className="text-xl font-bold text-slate-800 leading-none">
               POS Terminal / نقطة بيع

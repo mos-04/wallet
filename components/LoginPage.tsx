@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { apiClient } from '../services/apiClient';
 import { User } from '../types';
 import { Lock, User as UserIcon } from 'lucide-react';
+import LogoImage from '../src/images/sabic international logo.png';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
@@ -42,7 +43,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
         <div className="bg-white pt-8 px-8 py-8 pb-0 text-center">
-          <img src='../src/images/sabic international logo.png' alt="Logo" className="mx-auto mb-4 h-20" />
+          <img src={LogoImage} alt="Logo" className="mx-auto mb-4 h-20" />
         </div>
         <div className="bg-slate-50 text-center">
         <p className="text-black font-semibold text-lg">System Login</p>
