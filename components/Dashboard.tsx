@@ -15,6 +15,7 @@ import {
   X,
   Users as UsersIcon,
 } from 'lucide-react';
+import LogoImage from '../src/images/sabic international logo.png';
 
 interface DashboardProps {
   user: User;
@@ -230,15 +231,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Header */}
       <header className="bg-white border-b px-8 py-4 flex justify-between items-center shadow-sm sticky top-0 z-20">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-emerald-700 rounded-lg text-white">
-            <BarChart className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-800">Sabic Admin Dashboard</h1>
-            <p className="text-xs text-slate-500">
-              Sabic International General Trading &amp; Contracting Co. W.L.L
-            </p>
+        <div className="flex items-center gap-4">
+          <img src={LogoImage} alt="Sabic Logo" className="h-14" />
+          <div className="border-l border-slate-300 pl-4">
+            <h1 className="text-xl font-bold text-slate-800 leading-none">Admin Dashboard</h1>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="text-xs text-slate-500 font-medium">
+                Sabic International General Trading &amp; Contracting Co. W.L.L
+              </span>
+              <span className="text-xs text-slate-400">|</span>
+              <span className="text-xs text-slate-500 font-medium">
+                PH: +965 25456301
+              </span>
+              <span className="text-xs text-slate-400">|</span>
+              <span className="text-xs text-slate-500 font-medium">
+                info@sabicintl-kw.com
+              </span>
+            </div>
           </div>
         </div>
 
@@ -248,7 +257,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
               activeTab === 'overview'
-                ? 'bg-white shadow text-emerald-700'
+                ? 'bg-white shadow text-[#3c589e]'
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
@@ -258,7 +267,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             onClick={() => setActiveTab('inventory')}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
               activeTab === 'inventory'
-                ? 'bg-white shadow text-emerald-700'
+                ? 'bg-white shadow text-[#3c589e]'
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
@@ -268,7 +277,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             onClick={() => setActiveTab('users')}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
               activeTab === 'users'
-                ? 'bg-white shadow text-emerald-700'
+                ? 'bg-white shadow text-[#3c589e]'
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
@@ -278,7 +287,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             onClick={() => setActiveTab('audit')}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
               activeTab === 'audit'
-                ? 'bg-white shadow text-emerald-700'
+                ? 'bg-white shadow text-[#3c589e]'
                 : 'text-slate-500 hover:text-slate-700'
             }`}
           >
@@ -289,7 +298,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={onLogout}
-            className="text-sm text-slate-500 hover:text-red-600 font-medium px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
+            className="text-sm text-slate-500 hover:text-[#ff4033] font-medium px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
           >
             Logout
           </button>
@@ -333,7 +342,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
               <button
                 onClick={handleExport}
                 disabled={loading}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-sm transition-colors text-sm font-medium disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-[#3c589e] text-white rounded-lg hover:bg-[#2f4377] shadow-sm transition-colors text-sm font-medium disabled:opacity-50"
               >
                 <Download className="w-4 h-4" /> Export Report (CSV)
               </button>
@@ -347,11 +356,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex justify-between items-start mb-4">
-                      <div className="p-3 bg-green-50 rounded-lg text-green-600">
+                      <div className="p-3 bg-[#3c589e]/10 rounded-lg text-[#3c589e]">
                         <TrendingUp className="w-6 h-6" />
                       </div>
                     </div>
-                    <h3 className="text-slate-500 text-sm font-medium">Sabic Daily Revenue</h3>
+                    <h3 className="text-slate-500 text-sm font-medium">Daily Revenue</h3>
                     <p className="text-3xl font-bold text-slate-800 mt-1">
                       {format3(report.total_revenue)}{' '}
                       <span className="text-sm font-normal text-slate-400">KWD</span>
@@ -360,11 +369,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
                   <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex justify-between items-start mb-4">
-                      <div className="p-3 bg-blue-50 rounded-lg text-blue-600">
+                      <div className="p-3 bg-[#3c589e]/10 rounded-lg text-[#3c589e]">
                         <ShoppingBag className="w-6 h-6" />
                       </div>
                     </div>
-                    <h3 className="text-slate-500 text-sm font-medium">Sabic Sales Count</h3>
+                    <h3 className="text-slate-500 text-sm font-medium">Sales Count</h3>
                     <p className="text-3xl font-bold text-slate-800 mt-1">
                       {report.total_sales_count}
                     </p>
@@ -372,11 +381,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
                   <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex justify-between items-start mb-4">
-                      <div className="p-3 bg-purple-50 rounded-lg text-purple-600">
+                      <div className="p-3 bg-[#3c589e]/10 rounded-lg text-[#3c589e]">
                         <CreditCard className="w-6 h-6" />
                       </div>
                     </div>
-                    <h3 className="text-slate-500 text-sm font-medium">Avg. Ticket (Sabic)</h3>
+                    <h3 className="text-slate-500 text-sm font-medium">Average Ticket</h3>
                     <p className="text-3xl font-bold text-slate-800 mt-1">
                       {report.total_sales_count
                         ? format3(Number(report.total_revenue || 0) / report.total_sales_count)
@@ -390,7 +399,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                   {/* Payment Methods */}
                   <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <h3 className="text-lg font-bold text-slate-800 mb-6">
-                      Sabic Revenue by Payment Method
+                      Revenue by Payment Method
                     </h3>
                     <div className="space-y-4">
                       {report.sales_by_payment.map((item, idx) => {
@@ -407,7 +416,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                             </div>
                             <div className="w-full bg-slate-100 rounded-full h-2.5">
                               <div
-                                className="bg-emerald-600 h-2.5 rounded-full"
+                                className="bg-[#3c589e] h-2.5 rounded-full"
                                 style={{ width: `${percentage}%` }}
                               ></div>
                             </div>
@@ -456,11 +465,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Package className="w-5 h-5 text-emerald-600" /> Item Management
+                <Package className="w-5 h-5 text-[#3c589e]" /> Item Management
               </h2>
               <button
                 onClick={() => setShowAddItemModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 shadow-sm transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-[#3c589e] text-white rounded-lg hover:bg-[#2f4377] shadow-sm transition-colors text-sm font-medium"
               >
                 <Plus className="w-4 h-4" /> Add Item
               </button>
@@ -512,14 +521,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                               setNewPrice(String(item.price_per_unit ?? ''));
                             }}
                             disabled={itemLoading}
-                            className="text-emerald-600 hover:text-emerald-800 text-sm font-medium underline disabled:opacity-50"
+                            className="text-[#3c589e] hover:text-[#2f4377] text-sm font-medium underline disabled:opacity-50"
                           >
                             Edit Price
                           </button>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             disabled={itemLoading || deletingItemId === item.id}
-                            className="text-red-600 hover:text-red-800 text-sm font-medium disabled:opacity-50"
+                            className="text-[#ff4033] hover:text-[#e6362b] text-sm font-medium disabled:opacity-50"
                           >
                             {deletingItemId === item.id ? (
                               'Deleting...'
@@ -540,7 +549,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <div className="grid grid-cols-1 max-w-md mx-auto">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-6">
-                <UsersIcon className="w-5 h-5 text-emerald-600" /> Create New User
+                <UsersIcon className="w-5 h-5 text-[#3c589e]" /> Create New User
               </h2>
 
               <form onSubmit={handleCreateUser} className="space-y-4">
@@ -550,7 +559,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                   </label>
                   <input
                     type="text"
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#3c589e] focus:border-[#3c589e] outline-none"
                     value={newUsername}
                     onChange={e => setNewUsername(e.target.value)}
                     placeholder="e.g., cashier1"
@@ -565,7 +574,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                   </label>
                   <input
                     type="password"
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#3c589e] focus:border-[#3c589e] outline-none"
                     value={newPassword}
                     onChange={e => setNewPassword(e.target.value)}
                     placeholder="Enter secure password"
@@ -579,7 +588,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                     Role
                   </label>
                   <select
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#3c589e] focus:border-[#3c589e] outline-none"
                     value={newRole}
                     onChange={e => setNewRole(e.target.value as 'cashier' | 'admin')}
                     disabled={userLoading}
@@ -592,14 +601,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                 <button
                   type="submit"
                   disabled={userLoading}
-                  className="w-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold py-2.5 rounded-lg disabled:opacity-60 transition-colors"
+                  className="w-full bg-[#3c589e] hover:bg-[#2f4377] text-white text-sm font-semibold py-2.5 rounded-lg disabled:opacity-60 transition-colors"
                 >
                   {userLoading ? 'Creating User...' : 'Create User'}
                 </button>
               </form>
 
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-xs text-blue-700">
+              <div className="mt-6 p-4 bg-[#3c589e]/10 rounded-lg border border-[#3c589e]/20">
+                <p className="text-xs text-[#3c589e]">
                   <strong>ℹ️ Tip:</strong> Create cashier accounts for POS operators. Each user gets
                   their own login credentials.
                 </p>
@@ -610,7 +619,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
           /* AUDIT LOG TAB */
           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-6">
-              <Activity className="w-5 h-5 text-purple-600" /> System Audit Logs
+              <Activity className="w-5 h-5 text-[#3c589e]" /> System Audit Logs
             </h2>
             {loading && logs.length === 0 ? (
               <div className="text-center py-8 text-slate-500">Loading audit logs...</div>
@@ -689,7 +698,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
               <button
                 onClick={handleUpdatePrice}
                 disabled={itemLoading}
-                className="flex-1 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
+                className="flex-1 py-2 bg-[#3c589e] text-white rounded hover:bg-[#2f4377] disabled:opacity-50"
               >
                 {itemLoading ? 'Saving...' : 'Save'}
               </button>
@@ -778,7 +787,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
               <button
                 onClick={handleAddItem}
                 disabled={itemLoading}
-                className="flex-1 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
+                className="flex-1 py-2 bg-[#3c589e] text-white rounded hover:bg-[#2f4377] disabled:opacity-50"
               >
                 {itemLoading ? 'Creating...' : 'Create Item'}
               </button>

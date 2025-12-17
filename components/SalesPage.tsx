@@ -305,9 +305,19 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
             <h1 className="text-xl font-bold text-slate-800 leading-none">
               POS Terminal / نقطة بيع
             </h1>
-            <span className="text-xs text-slate-500 font-medium">
-              Cashier: {user.name} / الكاشير: {user.name}
-            </span>
+            <div className="flex items-center gap-4 mt-1">
+              <span className="text-xs text-slate-500 font-medium">
+                Cashier: {user.name} / الكاشير: {user.name}
+              </span>
+              <span className="text-xs text-slate-400">|</span>
+              <span className="text-xs text-slate-500 font-medium">
+                PH: +965 25456301
+              </span>
+              <span className="text-xs text-slate-400">|</span>
+              <span className="text-xs text-slate-500 font-medium">
+                info@sabicintl-kw.com
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
