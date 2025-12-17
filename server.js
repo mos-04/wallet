@@ -34,7 +34,7 @@ app.use(cors({
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  headers: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
