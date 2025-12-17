@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
@@ -400,8 +400,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n${'='.repeat(50)}`);
   console.log('  Kuwait POS Backend API');
   console.log(`${'='.repeat(50)}`);
-  console.log(`\n✅ Server running on http://localhost:${PORT}`);
-  console.log(`✅ Also accessible on http://192.168.1.3:${PORT}`);
+  console.log(`\n✅ Server running on port ${PORT}`);
   console.log(`\n📍 API Base: http://localhost:${PORT}/api`);
   console.log(`\n🧪 Test credentials:`);
   console.log(`   admin / admin123`);
