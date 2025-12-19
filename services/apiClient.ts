@@ -267,12 +267,12 @@ class APIClient {
     return response.blob();
   }
   
-  async getContractors(): Promise<Contractor[]> {
-    const response = await fetch(`${API_BASE}/api/contractors`, {
-      headers: getAuthHeaders(),
-    });
-    return handleResponse<Contractor[]>(response);
-  }
+async getContractors(): Promise<Contractor[]> {
+  const response = await fetch(`${API_BASE}/api/contractors`, {
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<Contractor[]>(response);
+}
 
   async getContractor(id: number): Promise<Contractor> {
     const response = await fetch(`${API_BASE}/api/contractors/${id}`, {

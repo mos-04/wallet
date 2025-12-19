@@ -6,12 +6,8 @@ import { CreditSalesModal } from './CreditSalesModal';
 import { CreditPaymentModal } from './CreditPaymentModal';
 import {
   ShoppingCart, Trash2, Plus, CreditCard, Banknote, FileText, Eraser,
-  RotateCcw, XCircle, Search, AlertCircle, History, Wallet, Calendar,
+  RotateCcw, XCircle, Search, AlertCircle, History, Wallet, Calendar, Check,
 } from 'lucide-react';
-import ChequeIcon from '../images/icoamoon--cheque.svg';
-import CashIcon from '../images/tabler--cash-banknote.svg';
-import CreditCardIcon from '../images/material-symbols-light--credit-card-outline.svg';
-import LogoImage from '../images/sabic international logo.png';
 
 interface SalesPageProps {
   user: User;
@@ -284,7 +280,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
       {/* Header */}
       <header className="bg-white border-b px-6 py-4 flex justify-between items-center shadow-sm z-10 shrink-0 sticky top-0">
         <div className="flex items-center gap-4">
-          <img src={LogoImage} alt="Logo" className="h-12" />
+          <div className="h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
           <div className="border-l border-slate-300 pl-4">
             <h1 className="text-xl font-bold text-slate-800 leading-none">POS Terminal</h1>
             <div className="flex items-center gap-4 mt-1">
@@ -617,19 +613,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       : 'border-slate-100 bg-white hover:border-blue-300 hover:bg-slate-50 text-slate-600'
                   }`}
                 >
-                  <img
-                    src={CashIcon}
-                    alt="Cash"
-                    className="w-6 h-6 mb-2"
-                    style={
-                      paymentMethod === 'cash'
-                        ? {
-                            filter:
-                              'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)',
-                          }
-                        : { filter: 'brightness(0) saturate(100%) opacity(60%)' }
-                    }
-                  />
+                  <Banknote className="w-6 h-6 mb-2" />
                   <span className="text-sm font-bold">Cash</span>
                   {paymentMethod === 'cash' && (
                     <div className="absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full" />
@@ -645,18 +629,10 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       : 'border-slate-100 bg-white hover:border-blue-300 hover:bg-slate-50 text-slate-600'
                   }`}
                 >
-                  <img
-                    src={CreditCardIcon}
-                    alt="Card"
-                    className="w-6 h-6 mb-2"
-                    style={
-                      paymentMethod === 'knet'
-                        ? {
-                            filter:
-                              'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)',
-                          }
-                        : { filter: 'brightness(0) saturate(100%) opacity(60%)' }
-                    }
+                  <CreditCard
+                    className={`w-6 h-6 mb-2 ${
+                      paymentMethod === 'knet' ? 'text-blue-600' : 'text-slate-600'
+                    }`}
                   />
                   <span className="text-sm font-bold">KNET</span>
                   {paymentMethod === 'knet' && (
@@ -673,19 +649,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                       : 'border-slate-100 bg-white hover:border-blue-300 hover:bg-slate-50 text-slate-600'
                   }`}
                 >
-                  <img
-                    src={ChequeIcon}
-                    alt="Cheque"
-                    className="w-6 h-6 mb-2"
-                    style={
-                      paymentMethod === 'cheque'
-                        ? {
-                            filter:
-                              'invert(32%) sepia(34%) saturate(1294%) hue-rotate(197deg) brightness(91%) contrast(91%)',
-                          }
-                        : { filter: 'brightness(0) saturate(100%) opacity(60%)' }
-                    }
-                  />
+                  <FileText className="w-6 h-6 mb-2" />
                   <span className="text-sm font-bold">Cheque</span>
                   {paymentMethod === 'cheque' && (
                     <div className="absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full" />
@@ -868,7 +832,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
 
       {/* Refund Modal */}
       {showRefundModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4 backdrop-blur-sm">
           <div className="bg-white w-full max-w-lg p-6 rounded-2xl shadow-2xl transform transition-all scale-100">
             <div className="flex justify-between items-center mb-6 pb-4 border-b">
               <div className="flex items-center gap-2">
@@ -990,7 +954,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
 
       {/* Sales History Modal */}
       {showSalesHistory && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4 backdrop-blur-sm">
           <div className="bg-white w-full max-w-3xl max-h-96 rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden">
             <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white">
               <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
