@@ -15,7 +15,7 @@ import {
   X,
   Users as UsersIcon,
 } from 'lucide-react';
-import LogoImage from '../images/sabic international logo.png';
+const LogoImage = '/src/images/sabic international logo.png';
 
 interface DashboardProps {
   user: User;
@@ -54,6 +54,29 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
   const format3 = (v: any) => Number(v || 0).toFixed(3);
   const format2 = (v: any) => Number(v || 0).toFixed(2);
+
+  const renderErrorInline = (msg: string) => {
+    if (!msg) return null;
+    // Replace patterns like: Cannot find module 'xyz' or Module not found: "xyz"
+    const regex = /(Cannot find module|Module not found|Cannot find package)\s*[:]?\s*["']?([^"'\s]+)["']?/gi;
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+    while ((match = regex.exec(msg)) !== null) {
+      const [full, , moduleName] = match;
+      const start = match.index;
+      if (start > lastIndex) parts.push(msg.slice(lastIndex, start));
+      parts.push(
+        <code key={start} className="bg-slate-100 px-1 rounded font-mono text-sm">
+          {moduleName}
+        </code>
+      );
+      lastIndex = start + full.length;
+    }
+    if (lastIndex < msg.length) parts.push(msg.slice(lastIndex));
+    // If no matches, just return the original message
+    return parts.length ? parts : msg;
+  };
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -308,7 +331,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       {/* Error Banner */}
       {error && (
         <div className="bg-red-50 border-b border-red-200 px-8 py-3 flex justify-between items-center">
-          <p className="text-sm text-red-700">{error}</p>
+          <p className="text-sm text-red-700">{renderErrorInline(error)}</p>
           <button onClick={() => setError(null)} className="text-red-600 hover:text-red-800">
             <X className="w-4 h-4" />
           </button>
