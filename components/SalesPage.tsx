@@ -21,7 +21,7 @@ import {
 import ChequeIcon from '../src/images/iconamoon--cheque.svg';
 import CashIcon from '../src/images/tabler--cash-banknote.svg';
 import CreditCardIcon from '../src/images/material-symbols-light--credit-card-outline.svg';
-import LogoImage from '../src/images/apex logo.png';
+import LogoImage from '../src/images/Apex Logo.png';
 
 interface SalesPageProps {
   user: User;
@@ -627,7 +627,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 <span className="text-lg font-bold text-slate-800">
                   TOTAL DUE / المبلغ المستحق
                 </span>
-                <span className="text-3xl font-extrabold bg-gradient-to-r from-[#0b51a1] to-[#26aae1] bg-clip-text text-transparent leading-none">
+                <span className="text-3xl font-extrabold text-[#0b51a1] leading-none">
                   {totalAmount.toFixed(3)}{' '}
                   <span className="text-sm text-slate-500 font-normal">
                     KWD / د.ك
@@ -763,7 +763,7 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                 className={`w-full py-4 rounded-xl text-white font-bold text-lg shadow-xl transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 ${
                   !canSubmit
                     ? 'bg-slate-300 cursor-not-allowed shadow-none'
-                    : 'bg-gradient-to-r from-[#0b51a1] to-[#26aae1] hover:shadow-2xl hover:shadow-[#26aae1]/30 hover:scale-105 hover:-translate-y-1'
+                    : 'bg-[#0b51a1] hover:shadow-2xl hover:shadow-[#0b51a1]/30 hover:scale-105 hover:-translate-y-1 hover:bg-[#083d7a]'
                 }`}
               >
                 {processing ? (
