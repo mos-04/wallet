@@ -23,6 +23,9 @@ import CashIcon from '../src/images/tabler--cash-banknote.svg';
 import CreditCardIcon from '../src/images/material-symbols-light--credit-card-outline.svg';
 import LogoImage from '../src/images/Apex Logo.png';
 
+import { CreditSalesModal } from './CreditSalesModal';
+import { CreditPaymentModal } from './CreditPaymentModal';
+
 interface SalesPageProps {
   user: User;
   onLogout: () => void;
@@ -60,6 +63,8 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
   const [refundReason, setRefundReason] = useState('');
   const [refundSearching, setRefundSearching] = useState(false);
   const [refundError, setRefundError] = useState<string>('');
+const [showCreditSalesModal, setShowCreditSalesModal] = useState(false);
+const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Sales History State
   const [showSalesHistory, setShowSalesHistory] = useState(false);
@@ -335,6 +340,13 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
             <RotateCcw className="w-4 h-4" />
             <span className="hidden md:inline">Refund / استرجاع</span>
           </button>
+           <button
+    onClick={() => setShowPaymentModal(true)}
+    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:-translate-y-0.5"
+  >
+    <Wallet className="w-4 h-4" />
+    Receive Credit Payment / استلام دفعة آجلة
+  </button>
           <button
             onClick={onLogout}
             className="text-sm text-slate-500 hover:text-[#ff6b35] font-medium ml-4 transition-all duration-300 hover:scale-110"
@@ -653,7 +665,17 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
                   return (
                     <button
                       key={method.id}
-                      onClick={() => setPaymentMethod(method.id as PaymentMethod)}
+                      onClick={() => {
+  if (method.id === 'credit') {
+    if (cart.length === 0) {
+      alert('Add items to cart first. / أضف منتجات أولاً');
+      return;
+    }
+    setShowCreditSalesModal(true);
+  } else {
+    setPaymentMethod(method.id as PaymentMethod);
+  }
+}}
                       className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 relative transform ${
                         isSelected
                           ? 'border-[#0b51a1] bg-gradient-to-br from-[#0b51a1]/10 to-[#26aae1]/10 text-[#0b51a1] shadow-lg scale-105'
@@ -955,6 +977,36 @@ export const SalesPage: React.FC<SalesPageProps> = ({ user, onLogout }) => {
           </div>
         </div>
       )}
+      {showCreditSalesModal && (
+  <CreditSalesModal
+    isOpen={showCreditSalesModal}
+    onClose={() => setShowCreditSalesModal(false)}
+    items={cart}
+    onSaleComplete={sale => {
+      setCompletedSale(sale);
+      setRecentSales([sale, ...recentSales].slice(0, 10));
+      setCart([]);
+      setKnetRef('');
+      setChequeNum('');
+      setDiscountValue('0');
+      setPaymentMethod(null);
+      setSelectedItemId('');
+      setQtyInput('1');
+      setShowCreditSalesModal(false);
+    }}
+  />
+)}
+
+{showPaymentModal && (
+  <CreditPaymentModal
+    isOpen={showPaymentModal}
+    onClose={() => setShowPaymentModal(false)}
+    onPaymentComplete={() => {
+      setShowPaymentModal(false);
+      // Optionally show a toast or refresh sales/contractors
+    }}
+  />
+)}
 
       {/* Sales History Modal */}
       {showSalesHistory && (

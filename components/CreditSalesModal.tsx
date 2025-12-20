@@ -3,6 +3,7 @@ import { apiClient } from '../services/apiClient';
 import { Contractor, SaleItem } from '../types';
 import { X, Plus, Search } from 'lucide-react';
 
+
 interface CreditSalesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -161,7 +162,8 @@ export const CreditSalesModal: React.FC<CreditSalesModalProps> = ({
                     <div className="text-xs text-slate-500">
                       Balance: <span className="font-mono">{(Number(contractor.total_credits) || 0).toFixed(3)} KWD</span>
                       {' / Limit: '}
-                      <span className="font-mono">{contractor.credit_limit.toFixed(3)} KWD</span>
+                      <span className="font-mono">
+                       {(Number(contractor.credit_limit) || 0).toFixed(3)} KWD</span>
                     </div>
                     {contractor.phone && <div className="text-xs text-slate-400">{contractor.phone}</div>}
                   </button>
@@ -248,26 +250,38 @@ export const CreditSalesModal: React.FC<CreditSalesModalProps> = ({
           )}
 
           {/* Summary */}
-          {selectedContractor && (
-            <div className="bg-slate-50 p-4 rounded-lg space-y-2">
-              <div className="flex justify-between">
-                <span className="text-slate-600">Subtotal:</span>
-                <span className="font-bold">{subtotal.toFixed(3)} KWD</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Discount:</span>
-                <span>-{discount.toFixed(3)} KWD</span>
-              </div>
-              <div className="border-t pt-2 flex justify-between">
-                <span className="font-bold">Total:</span>
-                <span className="font-bold text-lg text-blue-600">{total.toFixed(3)} KWD</span>
-              </div>
-              <div className="border-t pt-2 text-xs text-slate-600">
-                <div>Current Balance: <span className="font-mono">{(Number(selectedContractor.total_credits) || 0).toFixed(3)} KWD</span></div>
-                <div>After Sale: <span className="font-mono font-bold">{(selectedContractor.total_credits + total).toFixed(3)} KWD</span></div>
-              </div>
-            </div>
-          )}
+ {/* Summary */}
+{selectedContractor && (
+  <div className="bg-slate-50 p-4 rounded-lg space-y-2">
+    <div className="flex justify-between">
+      <span className="text-slate-600">Subtotal:</span>
+      <span className="font-bold">{subtotal.toFixed(3)} KWD</span>
+    </div>
+    <div className="flex justify-between text-slate-600">
+      <span>Discount:</span>
+      <span>-{discount.toFixed(3)} KWD</span>
+    </div>
+    <div className="border-t pt-2 flex justify-between">
+      <span className="font-bold">Total:</span>
+      <span className="font-bold text-lg text-blue-600">{total.toFixed(3)} KWD</span>
+    </div>
+    <div className="border-t pt-2 text-xs text-slate-600">
+      <div>
+        Current Balance:{' '}
+        <span className="font-mono">
+          {(Number(selectedContractor.total_credits) || 0).toFixed(3)} KWD
+        </span>
+      </div>
+      <div>
+        After Sale:{' '}
+        <span className="font-mono font-bold">
+          {((Number(selectedContractor.total_credits) || 0) + total).toFixed(3)} KWD
+        </span>
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
 
         {/* Actions */}
