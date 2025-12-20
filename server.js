@@ -694,7 +694,21 @@ app.post('/api/credit-sales', authenticateJWT, async (req, res) => {
       [req.user.id, 'CREDIT_SALE', `Credit sale ${sale_number} for ${total_amount} KWD`, contractor_id]
     );
 
-    res.status(201).json({ sale, contractor_balance: newTotalCredits });
+    // Fetch the complete sale with items to return
+    const itemsResult = await query(
+      'SELECT * FROM sale_items WHERE sale_id = $1',
+      [sale.id]
+    );
+
+    const completeSale = {
+      ...sale,
+      items: itemsResult.rows,
+      cashier_name: req.user.name
+    };
+
+    console.log('Credit Sale Response:', JSON.stringify(completeSale, null, 2));
+
+    res.status(201).json(completeSale);
   } catch (error) {
     console.error('Error creating credit sale:', error);
     res.status(500).json({ error: 'Failed to create credit sale' });

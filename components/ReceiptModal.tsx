@@ -10,6 +10,11 @@ interface ReceiptModalProps {
 export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClose }) => {
   if (!sale && !refund) return null;
 
+  // Debug logging
+  console.log('ReceiptModal - sale:', sale);
+  console.log('ReceiptModal - sale_number:', sale?.sale_number);
+  console.log('ReceiptModal - total_amount:', sale?.total_amount);
+
   const isRefund = !!refund;
 
   const formatDateTime = (isoString: string) => {
@@ -184,7 +189,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
           </tr>
         </thead>
         <tbody>
-          ${sale.items
+          ${(sale.items || [])
             .map(
               i => `
           <tr>
@@ -318,13 +323,15 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ sale, refund, onClos
             </p>
           </div>
           <p className="text-xs mb-1">
-            {isRefund ? 'Refund No: ' + refund!.refund_number : 'Sale No: ' + sale!.sale_number}
+            {isRefund 
+              ? 'Refund No: ' + (refund!.refund_number || 'N/A')
+              : 'Sale No: ' + (sale!.sale_number || 'Processing...')}
           </p>
           <p className="text-xs">
             Amount:{' '}
             {isRefund
-              ? Number(refund!.amount).toFixed(3)
-              : Number(sale!.total_amount).toFixed(3)}{' '}
+              ? (Number(refund!.amount) || 0).toFixed(3)
+              : (Number(sale!.total_amount) || 0).toFixed(3)}{' '}
             KWD
           </p>
         </div>
